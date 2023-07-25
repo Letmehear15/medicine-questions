@@ -1,0 +1,471 @@
+{
+    "questions": [
+        {
+            "id": 1,
+            "questionText": "Co NEpatří do klasifikace podle Tscherneho? (classification of fractures)",
+            "answers": [
+                {
+                    "text": "Poranění měkkého kolena",
+                    "isCorrect": true
+                },
+                {
+                    "text": "Otevřené zlomeniny",
+                    "isCorrect": false
+                },
+                {
+                    "text": "zlomeniny obratlů",
+                    "isCorrect": true
+                },
+                {
+                    "text": "Nějaká luxace klavikuly",
+                    "isCorrect": true
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "questionText": "Co patří do klasifikace podle Tscherneho?",
+            "answers": [
+                {
+                    "text": "Poranění měkkého kolena",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Otevřené zlomeniny",
+                    "isCorrect": true
+                },
+                {
+                    "text": "zlomeniny obratlů",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Nějaká luxace klavikuly",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "questionText": "Pro přesné a detailní vyšetření žlučovodů je nejpřínosnější (Klener)",
+            "answers": [
+                {
+                    "text": "rentgen vyšetření po lokálním podání kontrastní látky (ERCP, PTC)",
+                    "isCorrect": true
+                },
+                {
+                    "text": "nativní snímek",
+                    "isCorrect": false
+                },
+                {
+                    "text": "rentgen vyšetření po perorálním (cholecystografie) nebo intravenózním (cholangiografie) podání kontrastní látky",
+                    "isCorrect": false
+                },
+                {
+                    "text": "ultrasonografické vyšetření",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "questionText": "Myxom srdce:",
+            "answers": [
+                {
+                    "text": "recidivuje po chirurgické léčbě",
+                    "isCorrect": true
+                },
+                {
+                    "text": "nachází se v oblasti oválného okna",
+                    "isCorrect": true
+                },
+                {
+                    "text": "není nutné dělat ECHO / ECHO neefektivní metoda pro diagnostiku",
+                    "isCorrect": false
+                },
+                {
+                    "text": "je s klinikou podobnou infekční endokarditidě",
+                    "isCorrect": true
+                },
+                {
+                    "text": "základní diagnostická metoda echokardiografie (ECHO)",
+                    "isCorrect": true
+                },
+                {
+                    "text": "často recidivuje",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "questionText": "Základní metodou léčby je u málodiferencovaného / gestačního choriokarcinomu je (Živný)",
+            "answers": [
+                {
+                    "text": "operační léčba",
+                    "isCorrect": false
+                },
+                {
+                    "text": "chemoterapie (metotrexat, aktinomycinem D)",
+                    "isCorrect": true
+                },
+                {
+                    "text": "radioterapie",
+                    "isCorrect": false
+                },
+                {
+                    "text": "hormonoterapie",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "questionText": "Muž spadl, správa ve 4 mezikontálním prostoru bolest, správa neslyšící dech. Jaké první vyšetření musíme udělat?",
+            "answers": [
+                {
+                    "text": "punkce",
+                    "isCorrect": false
+                },
+                {
+                    "text": "drenáž",
+                    "isCorrect": false
+                },
+                {
+                    "text": "RTG (rentgen)",
+                    "isCorrect": true
+                },
+                {
+                    "text": "torakotomie",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "questionText": "Odkud se vyskytuje hyperkalcémie?",
+            "answers": [
+                {
+                    "text": "Osteomalacie",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Myelom",
+                    "isCorrect": true
+                },
+                {
+                    "text": "karence vitamínu D",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "questionText": "Mezi příčiny hyperkalcémie NEpatří: (Klener)",
+            "answers": [
+                {
+                    "text": "osteolytické metastázy",
+                    "isCorrect": false
+                },
+                {
+                    "text": "chronické selhání ledvin",
+                    "isCorrect": true
+                },
+                {
+                    "text": "adenom paratyreoidey",
+                    "isCorrect": false
+                },
+                {
+                    "text": "maligní myelom",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "questionText": "Hyperkalcémie víc než 2,5 přítomna při:",
+            "answers": [
+                {
+                    "text": "hyperparatyreoza",
+                    "isCorrect": true
+                },
+                {
+                    "text": "maligní tumory, osteolytické metastázy (v kostech)",
+                    "isCorrect": true
+                },
+                {
+                    "text": "Addisonova choroba, feochromocytom",
+                    "isCorrect": true
+                },
+                {
+                    "text": "granulomatózní onemocnění (sarkoidóza, tuberkulóza, syfilis)",
+                    "isCorrect": true
+                },
+                {
+                    "text": "Pagetova nemoc",
+                    "isCorrect": true
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "questionText": "Koncentrace vápníku (Calcium) v séru (serum) bývá zvýšena při:",
+            "answers": [
+                {
+                    "text": "primární hyperparatyreózy",
+                    "isCorrect": true
+                },
+                {
+                    "text": "osteomalacie",
+                    "isCorrect": false
+                },
+                {
+                    "text": "mnohočetného myelomu",
+                    "isCorrect": true
+                },
+                {
+                    "text": "sarkoidóze",
+                    "isCorrect": true
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "answers": [
+                {
+                    "text": "v period menarche",
+                    "isCorrect": true
+                },
+                {
+                    "text": "v period kdy mají М1 a Р1 (růst vlasů na těle a prsů)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "9-11 cm/rok",
+                    "isCorrect": true
+                },
+                {
+                    "text": "2 roky po menarche",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Jaké jsou tvrzení správné pro nejrychlejší růst děvčat?"
+        },
+        
+        {
+            "id": 16,
+            "answers": [
+                {
+                    "text": "močovina / urea",
+                    "isCorrect": true
+                },
+                {
+                    "text": "kreatinin",
+                    "isCorrect": false
+                },
+                {
+                    "text": "chlorid sodný (sodium chloride)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "kyselina močová",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Čeho v moči je nejvíc?"
+        },
+        
+        {
+            "id": 17,
+            "answers": [
+                {
+                    "text": "prevence pooperační pneumonie",
+                    "isCorrect": false
+                },
+                {
+                    "text": "maximální koncentrace ATB v krvi během operace",
+                    "isCorrect": true
+                },
+                {
+                    "text": "snížení rizika vzniku pooperační ranní infekce, která může ohrozit život",
+                    "isCorrect": true
+                },
+                {
+                    "text": "pro profylaxe infekce močovým měchýře a cest",
+                    "isCorrect": false
+                },
+                {
+                    "text": "podáváme po operaci na střevě",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Za jakým účelem se provádí preventivní předoperační antibakteriální terapie?"
+        },
+        
+        {
+            "id": 18,
+            "answers": [
+                {
+                    "text": "pokles estradiolu, vzestup FSH, ale normální koncentrace LH",
+                    "isCorrect": false
+                },
+                {
+                    "text": "vzestup FSH i LH při nezměněné koncentraci progesteronu",
+                    "isCorrect": false
+                },
+                {
+                    "text": "pokles progesteronu, vzestup FSH i LH",
+                    "isCorrect": true
+                },
+                {
+                    "text": "pokles estradiolu, progesteronu, FSH i LH",
+                    "isCorrect": false
+                },
+                {
+                    "text": "pokles progesteronu, pokles estradiolu",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Menopauza je charakterizována těmito změnami hormonálních hladin (Klener)"
+        },
+        
+        {
+            "id": 19,
+            "answers": [
+                {
+                    "text": "7-11 cm za rok (asi 12 let) za rok před menarche",
+                    "isCorrect": true
+                },
+                {
+                    "text": "13 let",
+                    "isCorrect": false
+                },
+                {
+                    "text": "před menarche",
+                    "isCorrect": true
+                },
+                {
+                    "text": "během menstruace",
+                    "isCorrect": false
+                },
+                {
+                    "text": "po začátku menstruace",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Nejvyšší rychlost růstu u dívek?"
+        },
+        
+        {
+            "id": 20,
+            "answers": [
+                {
+                    "text": "zrychluje zrání folikulů",
+                    "isCorrect": true
+                },
+                {
+                    "text": "reguluje menstruační cyklus",
+                    "isCorrect": false
+                },
+                {
+                    "text": "produkovaný předním lalokem hypofýzy",
+                    "isCorrect": true
+                }
+            ],
+            "questionText": "Co platí pro FSH (folikulostimulační hormon)? / Účinek FSH?"
+        },
+        
+        {
+            "id": 21,
+            "answers": [
+                {
+                    "text": "je nezbytně nutný pro udrženi funkce corpus luteum (žluté tělísko)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "stimuluje tvorbu estradiolu v granulózních buňkách",
+                    "isCorrect": true
+                },
+                {
+                    "text": "zvýšen při syndromu polycystických ovarii",
+                    "isCorrect": false
+                },
+                {
+                    "text": "je odpovědny za rupturu folikulu",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Co platí pro FSH?"
+        },
+        
+        {
+            "id": 22,
+            "answers": [
+                {
+                    "text": "bronchokonstrikce",
+                    "isCorrect": true
+                },
+                {
+                    "text": "arteriální hypertenze",
+                    "isCorrect": false
+                },
+                {
+                    "text": "tachykardie",
+                    "isCorrect": false
+                }
+            ],
+            "questionText": "Nežádoucí účinek B-blokátorů?"
+        },
+        
+        {
+            "id": 23,
+            "answers": [
+                {
+                    "text": "snížení spotřeby kyslíku myokardem",
+                    "isCorrect": true
+                },
+                {
+                    "text": "vzestup kontraktility myokardu (zvýšit příjem kyslíku)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "vazodilatační efekt na koronární tepny (použitelné pro blokátory kalciových kanálů)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "vzestup fibrilačního prahu myokardu",
+                    "isCorrect": true
+                }
+            ],
+            "questionText": "K účinkům B-blokátorů u anginy pectoris patří:"
+        },
+        
+        {
+            "id": 24,
+            "answers": [
+                {
+                    "text": "Srdeční selhání (snižuje spotřebu kyslíku myokardu)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Glaukom (timolol a betaxolol inhibují tvorbu nitrooční tekutiny)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Angina pectoris (snižuje spotřebu kyslíku myokardu)",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Parkinsonova nemoc",
+                    "isCorrect": true
+                },
+                {
+                    "text": "Astma bronch.",
+                    "isCorrect": true
+                }
+            ],
+            "questionText": "Kdy NEpodáváme B-blokátory?"
+        }        
+    ]
+}
+
+

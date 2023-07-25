@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import { Layout } from "./components/Layout";
+import { Container } from "@mui/material";
 
-function App() {
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Paper
+      sx={{
+        width: "100%",
+        minHeight: "100vh",
+        pt: 3,
+      }}
+    >
+      <Container>
+        <Layout />
+      </Container>
+    </Paper>
   );
-}
-
-export default App;
+};
