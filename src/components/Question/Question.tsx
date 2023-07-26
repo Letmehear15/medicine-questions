@@ -1,29 +1,55 @@
 import React, { useState } from "react";
-import questions from "../../data/questions.json";
 import { IQuestion, useQuestion } from "../../context/QuestionProvider";
 import { Button, Stack, Typography } from "@mui/material";
 import { useData } from "../../hooks/useData";
 import { Answers } from "../Answers";
+import { EPaths, useRedirect } from "../../context/RedirectProvider";
 
 export const Question = () => {
-  const { currentQuestionIndex, onLastOpenQuestionUpdate, isTheLastQuestion } =
-    useQuestion();
+  const {
+    currentQuestionIndex,
+    onLastOpenQuestionUpdate,
+    isTheLastQuestion,
+    isTheLastWrongAnswer,
+    onNextWrongAnswers,
+    currentWrongQuestionIndex,
+    currentWrongAnswer,
+    wrongAnswerIndexes,
+  } = useQuestion();
 
-  const { questionText, answers }: IQuestion =
-    questions.questions[currentQuestionIndex];
+  const questions = useData();
+  const { path } = useRedirect();
 
-  const questionLength = useData().length;
+  const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
+  const questionIndex = isWrongAnswerPage
+    ? currentWrongAnswer
+    : currentQuestionIndex;
+
+  const { questionText, answers }: IQuestion = questions[questionIndex];
+
+  const numberOfQuestion = isWrongAnswerPage
+    ? currentWrongQuestionIndex + 1
+    : currentQuestionIndex + 1;
+
+  const questionLength = isWrongAnswerPage
+    ? wrongAnswerIndexes.length
+    : questions.length;
+
   const [wasChecked, setWasChecked] = useState(false);
 
   const onNextQuestion = () => {
-    onLastOpenQuestionUpdate();
+    if (!isWrongAnswerPage) {
+      onLastOpenQuestionUpdate();
+    } else {
+      onNextWrongAnswers();
+    }
     setWasChecked(false);
   };
 
   return (
-    <Stack gap={10}>
+    <Stack gap={3}>
       <Typography textAlign="center">
-        {currentQuestionIndex + 1}/{questionLength}
+        {numberOfQuestion}/{questionLength}
       </Typography>
 
       <Stack gap={3}>
@@ -38,7 +64,9 @@ export const Question = () => {
 
       {wasChecked && (
         <Button variant="contained" onClick={onNextQuestion}>
-          {isTheLastQuestion ? "На главную" : "Следующий вопрос"}
+          {isTheLastQuestion || (isTheLastWrongAnswer && isWrongAnswerPage)
+            ? "На главную"
+            : "Следующий вопрос"}
         </Button>
       )}
     </Stack>

@@ -15,7 +15,6 @@ export const ArrowBack = () => {
       display="flex"
       alignItems="center"
       gap={1}
-      mb={3}
       sx={{ width: "fit-content", cursor: "pointer" }}
       onClick={onRedirect}
     >

@@ -1,5 +1,6 @@
 export enum LocalstorageItems {
-    lastOpenQuestion = 'last-open-question'
+    lastOpenQuestion = 'last-open-question',
+    wrongAnswers = 'wrong-answers'
 }
 
 
@@ -17,7 +18,6 @@ export const useLocalstorage = () => {
      const setValueToLocalstorage = (item:LocalstorageItems, value: any ) => {
         localStorage.setItem(item, value)
     }
-
 
     return {getFromLocalstorage, setValueToLocalstorage}
 }

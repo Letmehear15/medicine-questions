@@ -8,7 +8,7 @@ export const App = () => {
     <Paper
       sx={{
         width: "100%",
-        minHeight: "100vh",
+        height: "100vh",
         pt: 3,
       }}
     >

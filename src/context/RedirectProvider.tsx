@@ -4,7 +4,7 @@ import { FCC } from "../types";
 export enum EPaths {
   MAIN = "main",
   QUESTION = "question",
-  LAST_OPEN = "lastOpen",
+  WRONG_ANSWERS = "wrongAnswers",
 }
 
 interface IRedirectContext {

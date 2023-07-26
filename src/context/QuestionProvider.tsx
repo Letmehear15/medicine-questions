@@ -7,8 +7,15 @@ import { useData } from "../hooks/useData";
 interface IQuestionContext {
   onLastOpenQuestionUpdate: () => void;
   onStartTesting: () => void;
+  onAddWrongAnswer: () => void;
+  onNextWrongAnswers: () => void;
+  removeWrongAnswer: () => void;
   currentQuestionIndex: number;
+  currentWrongAnswer: number;
   isTheLastQuestion: boolean;
+  wrongAnswerIndexes: number[];
+  isTheLastWrongAnswer: boolean;
+  currentWrongQuestionIndex: number;
 }
 
 export interface IAnswers {
@@ -26,25 +33,36 @@ const QuestionContext = createContext<IQuestionContext | null>(null);
 
 export const QuestionProvider: FCC = ({ children }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentWrongQuestionIndex, setCurrentWrongQuestionIndex] = useState(0);
   const [isInit, setIsInit] = useState(false);
+  const [wrongAnswerIndexes, setWrongAnswerIndexes] = useState<number[]>([]);
+
   const { setValueToLocalstorage, getFromLocalstorage } = useLocalstorage();
   const { onChangePath } = useRedirect();
+
   const questionLength = useData().length - 1;
   const isTheLastQuestion = currentQuestionIndex === questionLength;
+  const isTheLastWrongAnswer =
+    currentWrongQuestionIndex === wrongAnswerIndexes.length - 1;
+
+  const currentWrongAnswer = wrongAnswerIndexes[currentWrongQuestionIndex];
 
   useEffect(() => {
-    const lastOpenQuestionIndex = getFromLocalstorage(
-      LocalstorageItems.lastOpenQuestion
+    const lastOpenQuestionIndex = Number(
+      getFromLocalstorage(LocalstorageItems.lastOpenQuestion)
     );
+    const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
 
-    if (
-      lastOpenQuestionIndex &&
-      Number(lastOpenQuestionIndex) &&
-      Number(lastOpenQuestionIndex) > 0
-    ) {
-      setCurrentQuestionIndex(Number(lastOpenQuestionIndex));
+    if (lastOpenQuestionIndex > 0) {
+      setCurrentQuestionIndex(lastOpenQuestionIndex);
+    }
+
+    if (wrongAnswers) {
+      const parsedWrongAnswers = JSON.parse(wrongAnswers);
+      setWrongAnswerIndexes(parsedWrongAnswers);
     }
     setIsInit(true);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -71,11 +89,75 @@ export const QuestionProvider: FCC = ({ children }) => {
     resetQuestions();
   };
 
-  const value = {
+  const onNextWrongAnswers = () => {
+    if (!isTheLastWrongAnswer) {
+      setCurrentWrongQuestionIndex((prev) => prev + 1);
+    } else {
+      onChangePath(EPaths.MAIN);
+      setCurrentWrongQuestionIndex(0);
+
+      const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
+      if (wrongAnswers) {
+        const parsedWrongAnswers = JSON.parse(wrongAnswers);
+
+        setWrongAnswerIndexes(parsedWrongAnswers);
+      }
+    }
+  };
+
+  const onAddWrongAnswer = () => {
+    const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
+
+    if (wrongAnswers) {
+      const parsedWrongAnswers = JSON.parse(wrongAnswers);
+
+      setValueToLocalstorage(
+        LocalstorageItems.wrongAnswers,
+        JSON.stringify([
+          ...new Set([...parsedWrongAnswers, currentQuestionIndex]),
+        ])
+      );
+    } else {
+      setValueToLocalstorage(
+        LocalstorageItems.wrongAnswers,
+        JSON.stringify([currentQuestionIndex])
+      );
+    }
+
+    setWrongAnswerIndexes([
+      ...new Set([...wrongAnswerIndexes, currentQuestionIndex]),
+    ]);
+  };
+
+  const removeWrongAnswer = () => {
+    const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
+
+    if (wrongAnswers) {
+      const parsedWrongAnswers = JSON.parse(wrongAnswers);
+
+      setValueToLocalstorage(
+        LocalstorageItems.wrongAnswers,
+        JSON.stringify(
+          parsedWrongAnswers.filter(
+            (answer: number) => answer !== currentWrongAnswer
+          )
+        )
+      );
+    }
+  };
+
+  const value: IQuestionContext = {
     onLastOpenQuestionUpdate,
     currentQuestionIndex,
     onStartTesting,
     isTheLastQuestion,
+    onAddWrongAnswer,
+    onNextWrongAnswers,
+    currentWrongAnswer,
+    isTheLastWrongAnswer,
+    wrongAnswerIndexes,
+    currentWrongQuestionIndex,
+    removeWrongAnswer,
   };
 
   if (!isInit) {

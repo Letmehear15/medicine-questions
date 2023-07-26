@@ -1,5 +1,5 @@
 import React, { FC, useLayoutEffect, useState } from "react";
-import { IAnswers } from "../../context/QuestionProvider";
+import { IAnswers, useQuestion } from "../../context/QuestionProvider";
 import {
   Button,
   Checkbox,
@@ -9,6 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { EPaths, useRedirect } from "../../context/RedirectProvider";
 
 interface IAnswersProps {
   answers: IAnswers[];
@@ -22,15 +23,36 @@ export const Answers: FC<IAnswersProps> = ({
   wasChecked,
 }) => {
   const [checked, setChecked] = useState<number[]>([]);
+  const { onAddWrongAnswer, removeWrongAnswer } = useQuestion();
+  const { path } = useRedirect();
 
   const { palette } = useTheme();
+
+  const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
 
   useLayoutEffect(() => {
     setChecked([]);
   }, [answers]);
 
+  const rightAnswers = answers
+    .map((answer, index) => (answer.isCorrect ? index : -1))
+    .filter((index) => index !== -1);
+
+  const wasRightAnswer =
+    rightAnswers.length === checked.length &&
+    rightAnswers.every((answer) => checked.includes(answer));
+
   const onCheckAnswers = () => {
     setWasChecked(true);
+
+    if (!isWrongAnswerPage && !wasRightAnswer) {
+      onAddWrongAnswer();
+      return;
+    }
+
+    if (isWrongAnswerPage && wasRightAnswer) {
+      removeWrongAnswer();
+    }
   };
 
   const onCheckChange = (index: number) => {
@@ -56,6 +78,13 @@ export const Answers: FC<IAnswersProps> = ({
 
   return (
     <Stack>
+      {wasChecked && (
+        <Typography
+          color={wasRightAnswer ? palette.success.main : palette.error.main}
+        >
+          {wasRightAnswer ? "Умничка!" : "Все равно умничка!"}
+        </Typography>
+      )}
       <FormGroup>
         {answers.map(({ text, isCorrect }, index) => (
           <FormControlLabel

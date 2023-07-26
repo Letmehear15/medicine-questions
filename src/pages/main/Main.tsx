@@ -9,7 +9,7 @@ import { EPaths, useRedirect } from "../../context/RedirectProvider";
 
 export const Main = () => {
   const { getFromLocalstorage } = useLocalstorage();
-  const { onStartTesting } = useQuestion();
+  const { onStartTesting, wrongAnswerIndexes } = useQuestion();
   const { onChangePath } = useRedirect();
 
   const hasLastOpenQuestion = getFromLocalstorage(
@@ -19,8 +19,8 @@ export const Main = () => {
   const shouldShowContinueButton =
     hasLastOpenQuestion && Number(hasLastOpenQuestion) > 0;
 
-  const onRedirect = () => {
-    onChangePath(EPaths.QUESTION);
+  const onRedirect = (path: EPaths) => {
+    onChangePath(path);
   };
 
   return (
@@ -33,7 +33,7 @@ export const Main = () => {
           size="large"
           variant="outlined"
           endIcon={<span>&#128044;</span>}
-          onClick={onRedirect}
+          onClick={() => onRedirect(EPaths.QUESTION)}
         >
           Продолжить
         </Button>
@@ -46,8 +46,14 @@ export const Main = () => {
       >
         Начать тестирование
       </Button>
-      <Button size="large" variant="contained" endIcon={<span>&#128061;</span>}>
-        Неправильные вопросы
+      <Button
+        onClick={() => onRedirect(EPaths.WRONG_ANSWERS)}
+        size="large"
+        variant="contained"
+        endIcon={<span>&#128061;</span>}
+        disabled={wrongAnswerIndexes.length === 0}
+      >
+        Неверные ответы
       </Button>
       <Button size="large" variant="contained" endIcon={<span>&#128065;</span>}>
         Статистика
