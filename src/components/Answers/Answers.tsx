@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState } from "react";
+import React, { FC, useLayoutEffect, useMemo, useState } from "react";
 import { IAnswers, useQuestion } from "../../context/QuestionProvider";
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { EPaths, useRedirect } from "../../context/RedirectProvider";
+import { shuffleArray } from "../../utils/utils";
 
 interface IAnswersProps {
   answers: IAnswers[];
@@ -76,6 +77,10 @@ export const Answers: FC<IAnswersProps> = ({
         }
       : {};
 
+  const shuffledAnswers = useMemo(() => {
+    return shuffleArray(answers);
+  }, [answers]);
+
   return (
     <Stack>
       {wasChecked && (
@@ -86,7 +91,7 @@ export const Answers: FC<IAnswersProps> = ({
         </Typography>
       )}
       <FormGroup>
-        {answers.map(({ text, isCorrect }, index) => (
+        {shuffledAnswers.map(({ text, isCorrect }, index) => (
           <FormControlLabel
             sx={{ mb: 3 }}
             key={index}

@@ -9,12 +9,12 @@ export const Question = () => {
   const {
     currentQuestionIndex,
     onLastOpenQuestionUpdate,
-    isTheLastQuestion,
     isTheLastWrongAnswer,
     onNextWrongAnswers,
     currentWrongQuestionIndex,
     currentWrongAnswer,
     wrongAnswerIndexes,
+    isTheLastQuetiosnInGroup,
   } = useQuestion();
 
   const questions = useData();
@@ -64,7 +64,8 @@ export const Question = () => {
 
       {wasChecked && (
         <Button variant="contained" onClick={onNextQuestion}>
-          {isTheLastQuestion || (isTheLastWrongAnswer && isWrongAnswerPage)
+          {isTheLastQuetiosnInGroup ||
+          (isTheLastWrongAnswer && isWrongAnswerPage)
             ? "На главную"
             : "Следующий вопрос"}
         </Button>

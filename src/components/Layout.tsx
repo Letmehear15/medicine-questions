@@ -6,6 +6,7 @@ import { EPaths, useRedirect } from "../context/RedirectProvider";
 import { ArrowBack } from "./ArrowBack";
 import { WrongAnswers } from "../pages/wrong-answers/WrongAnswers";
 import { Box, Typography, useTheme } from "@mui/material";
+import { QuestionDivision } from "../pages/question-division/QuestionDivision";
 
 export const Layout = () => {
   const { path } = useRedirect();
@@ -17,6 +18,8 @@ export const Layout = () => {
         return <Main />;
       case EPaths.QUESTION:
         return <QuestionPage />;
+      case EPaths.QUESTION_DIVISION:
+        return <QuestionDivision />;
       case EPaths.WRONG_ANSWERS:
         return <WrongAnswers />;
       default:

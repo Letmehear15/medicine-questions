@@ -2,17 +2,17 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { FCC } from "../types";
 import { LocalstorageItems, useLocalstorage } from "../hooks/useLocalstorage";
 import { EPaths, useRedirect } from "./RedirectProvider";
-import { useData } from "../hooks/useData";
+import { QUESTIONS_PER_GROUP } from "../pages/question-division/QuestionDivision";
 
 interface IQuestionContext {
   onLastOpenQuestionUpdate: () => void;
-  onStartTesting: () => void;
+  onStartTesting: (currentQuestion: number) => void;
   onAddWrongAnswer: () => void;
   onNextWrongAnswers: () => void;
   removeWrongAnswer: () => void;
   currentQuestionIndex: number;
   currentWrongAnswer: number;
-  isTheLastQuestion: boolean;
+  isTheLastQuetiosnInGroup: boolean;
   wrongAnswerIndexes: number[];
   isTheLastWrongAnswer: boolean;
   currentWrongQuestionIndex: number;
@@ -40,12 +40,12 @@ export const QuestionProvider: FCC = ({ children }) => {
   const { setValueToLocalstorage, getFromLocalstorage } = useLocalstorage();
   const { onChangePath } = useRedirect();
 
-  const questionLength = useData().length - 1;
-  const isTheLastQuestion = currentQuestionIndex === questionLength;
   const isTheLastWrongAnswer =
     currentWrongQuestionIndex === wrongAnswerIndexes.length - 1;
 
   const currentWrongAnswer = wrongAnswerIndexes[currentWrongQuestionIndex];
+  const isTheLastQuetiosnInGroup =
+    (currentQuestionIndex + 1) % QUESTIONS_PER_GROUP === 0;
 
   useEffect(() => {
     const lastOpenQuestionIndex = Number(
@@ -72,7 +72,7 @@ export const QuestionProvider: FCC = ({ children }) => {
   };
 
   const onLastOpenQuestionUpdate = () => {
-    if (!isTheLastQuestion) {
+    if (!isTheLastQuetiosnInGroup) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setValueToLocalstorage(
         LocalstorageItems.lastOpenQuestion,
@@ -84,9 +84,10 @@ export const QuestionProvider: FCC = ({ children }) => {
     }
   };
 
-  const onStartTesting = () => {
+  const onStartTesting = (currentQuestion: number) => {
     onChangePath(EPaths.QUESTION);
-    resetQuestions();
+    setCurrentQuestionIndex(currentQuestion);
+    setValueToLocalstorage(LocalstorageItems.lastOpenQuestion, currentQuestion);
   };
 
   const onNextWrongAnswers = () => {
@@ -150,7 +151,6 @@ export const QuestionProvider: FCC = ({ children }) => {
     onLastOpenQuestionUpdate,
     currentQuestionIndex,
     onStartTesting,
-    isTheLastQuestion,
     onAddWrongAnswer,
     onNextWrongAnswers,
     currentWrongAnswer,
@@ -158,6 +158,7 @@ export const QuestionProvider: FCC = ({ children }) => {
     wrongAnswerIndexes,
     currentWrongQuestionIndex,
     removeWrongAnswer,
+    isTheLastQuetiosnInGroup,
   };
 
   if (!isInit) {

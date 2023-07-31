@@ -9,7 +9,7 @@ import { EPaths, useRedirect } from "../../context/RedirectProvider";
 
 export const Main = () => {
   const { getFromLocalstorage } = useLocalstorage();
-  const { onStartTesting, wrongAnswerIndexes } = useQuestion();
+  const { wrongAnswerIndexes } = useQuestion();
   const { onChangePath } = useRedirect();
 
   const hasLastOpenQuestion = getFromLocalstorage(
@@ -18,10 +18,6 @@ export const Main = () => {
 
   const shouldShowContinueButton =
     hasLastOpenQuestion && Number(hasLastOpenQuestion) > 0;
-
-  const onRedirect = (path: EPaths) => {
-    onChangePath(path);
-  };
 
   return (
     <Stack gap={5}>
@@ -33,13 +29,13 @@ export const Main = () => {
           size="large"
           variant="outlined"
           endIcon={<span>&#128044;</span>}
-          onClick={() => onRedirect(EPaths.QUESTION)}
+          onClick={() => onChangePath(EPaths.QUESTION)}
         >
           Продолжить
         </Button>
       )}
       <Button
-        onClick={onStartTesting}
+        onClick={() => onChangePath(EPaths.QUESTION_DIVISION)}
         size="large"
         variant="contained"
         endIcon={<span>&#128021;</span>}
@@ -47,7 +43,7 @@ export const Main = () => {
         Начать тестирование
       </Button>
       <Button
-        onClick={() => onRedirect(EPaths.WRONG_ANSWERS)}
+        onClick={() => onChangePath(EPaths.WRONG_ANSWERS)}
         size="large"
         variant="contained"
         endIcon={<span>&#128061;</span>}
@@ -55,7 +51,12 @@ export const Main = () => {
       >
         Неверные ответы
       </Button>
-      <Button size="large" variant="contained" endIcon={<span>&#128065;</span>}>
+      <Button
+        disabled
+        size="large"
+        variant="contained"
+        endIcon={<span>&#128065;</span>}
+      >
         Статистика
       </Button>
     </Stack>
