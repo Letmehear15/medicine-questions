@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/medicine-questions/static/css/main.e6c13ad2.css",
-    "main.js": "/medicine-questions/static/js/main.922f1449.js",
+    "main.js": "/medicine-questions/static/js/main.b3f80ead.js",
     "static/js/787.d0dceb66.chunk.js": "/medicine-questions/static/js/787.d0dceb66.chunk.js",
     "service-worker.js": "/medicine-questions/service-worker.js",
     "index.html": "/medicine-questions/index.html",
     "main.e6c13ad2.css.map": "/medicine-questions/static/css/main.e6c13ad2.css.map",
-    "main.922f1449.js.map": "/medicine-questions/static/js/main.922f1449.js.map",
+    "main.b3f80ead.js.map": "/medicine-questions/static/js/main.b3f80ead.js.map",
     "787.d0dceb66.chunk.js.map": "/medicine-questions/static/js/787.d0dceb66.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.922f1449.js"
+    "static/js/main.b3f80ead.js"
   ]
 }
