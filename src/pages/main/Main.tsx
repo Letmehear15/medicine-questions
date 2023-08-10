@@ -20,7 +20,7 @@ export const Main = () => {
     hasLastOpenQuestion && Number(hasLastOpenQuestion) > 0;
 
   return (
-    <Stack gap={5}>
+    <Stack gap={5} sx={{ height: "100vh" }}>
       <Typography mb={5} variant="h3" textAlign="center">
         Для Мимимилки
       </Typography>

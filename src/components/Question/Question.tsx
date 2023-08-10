@@ -52,7 +52,7 @@ export const Question = () => {
   }, [answers]);
 
   return (
-    <Stack gap={3}>
+    <Stack gap={3} minHeight="100dvh">
       <Typography textAlign="center">
         {numberOfQuestion}/{questionLength}
       </Typography>
