@@ -7,24 +7,25 @@ export const QUESTIONS_PER_GROUP = 100;
 
 export const QuestionDivision = () => {
   const questions = useData();
-
   const { onStartTesting } = useQuestion();
 
   return (
     <List>
       {questions.map((_, index) => {
-        if ((index + 1) % QUESTIONS_PER_GROUP === 0) {
-          const startIndex = index + 1 - QUESTIONS_PER_GROUP + 1;
+        if (
+          (index + 1) % QUESTIONS_PER_GROUP === 0 ||
+          index === questions.length - 1
+        ) {
+          const startIndex = index - (index % QUESTIONS_PER_GROUP);
 
           return (
             <React.Fragment key={index}>
               <ListItem>
-                <ListItemButton onClick={() => onStartTesting(startIndex - 1)}>
-                  От {startIndex} до {index + 1}
+                <ListItemButton onClick={() => onStartTesting(startIndex)}>
+                  От {startIndex + 1} до {index + 1}
                 </ListItemButton>
               </ListItem>
-
-              <Divider />
+              {index !== questions.length - 1 && <Divider />}
             </React.Fragment>
           );
         }
