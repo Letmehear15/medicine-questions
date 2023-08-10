@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IQuestion, useQuestion } from "../../context/QuestionProvider";
 import { Button, Stack, Typography } from "@mui/material";
 import { useData } from "../../hooks/useData";
 import { Answers } from "../Answers";
 import { EPaths, useRedirect } from "../../context/RedirectProvider";
+import { shuffleArray } from "../../utils/utils";
 
 export const Question = () => {
   const {
@@ -46,6 +47,10 @@ export const Question = () => {
     setWasChecked(false);
   };
 
+  const shuffledAnswers = useMemo(() => {
+    return shuffleArray(answers);
+  }, [answers]);
+
   return (
     <Stack gap={3}>
       <Typography textAlign="center">
@@ -58,7 +63,7 @@ export const Question = () => {
         <Answers
           wasChecked={wasChecked}
           setWasChecked={setWasChecked}
-          answers={answers}
+          answers={shuffledAnswers}
         />
       </Stack>
 

@@ -3,7 +3,7 @@ import { useData } from "../../hooks/useData";
 import { Divider, List, ListItem, ListItemButton } from "@mui/material";
 import { useQuestion } from "../../context/QuestionProvider";
 
-export const QUESTIONS_PER_GROUP = 5;
+export const QUESTIONS_PER_GROUP = 100;
 
 export const QuestionDivision = () => {
   const questions = useData();
