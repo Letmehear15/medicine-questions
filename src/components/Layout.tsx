@@ -7,6 +7,7 @@ import { ArrowBack } from "./ArrowBack";
 import { WrongAnswers } from "../pages/wrong-answers/WrongAnswers";
 import { Box, Typography, useTheme } from "@mui/material";
 import { QuestionDivision } from "../pages/question-division/QuestionDivision";
+import { Statistic } from "../pages/statistic";
 
 export const Layout = () => {
   const { path } = useRedirect();
@@ -22,6 +23,8 @@ export const Layout = () => {
         return <QuestionDivision />;
       case EPaths.WRONG_ANSWERS:
         return <WrongAnswers />;
+      case EPaths.STATISTIC:
+        return <Statistic />;
       default:
         return <Main />;
     }
@@ -36,6 +39,7 @@ export const Layout = () => {
         justifyContent="space-between"
       >
         {path !== EPaths.MAIN && <ArrowBack />}
+
         {path === EPaths.WRONG_ANSWERS && (
           <Typography
             fontSize={13}

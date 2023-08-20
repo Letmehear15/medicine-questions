@@ -20,8 +20,10 @@ export const Question = () => {
 
   const questions = useData();
   const { path } = useRedirect();
+  const [wasChecked, setWasChecked] = useState(false);
 
   const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
+
   const questionIndex = isWrongAnswerPage
     ? currentWrongAnswer
     : currentQuestionIndex;
@@ -35,8 +37,6 @@ export const Question = () => {
   const questionLength = isWrongAnswerPage
     ? wrongAnswerIndexes.length
     : questions.length;
-
-  const [wasChecked, setWasChecked] = useState(false);
 
   const onNextQuestion = () => {
     if (!isWrongAnswerPage) {

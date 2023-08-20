@@ -1,8 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { FCC } from "../types";
 import { LocalstorageItems, useLocalstorage } from "../hooks/useLocalstorage";
 import { EPaths, useRedirect } from "./RedirectProvider";
 import { QUESTIONS_PER_GROUP } from "../pages/question-division/QuestionDivision";
+import { useData } from "../hooks/useData";
 
 interface IQuestionContext {
   onLastOpenQuestionUpdate: () => void;
@@ -29,6 +36,13 @@ export interface IQuestion {
   answers: IAnswers[];
 }
 
+export interface IStatistic {
+  date: string;
+  selectedQuestionBlock: number;
+  countOfWrongAnswers: number;
+  questionsInBlock: number;
+}
+
 const QuestionContext = createContext<IQuestionContext | null>(null);
 
 export const QuestionProvider: FCC = ({ children }) => {
@@ -38,33 +52,51 @@ export const QuestionProvider: FCC = ({ children }) => {
   const [wrongAnswerIndexes, setWrongAnswerIndexes] = useState<number[]>([]);
 
   const { setValueToLocalstorage, getFromLocalstorage } = useLocalstorage();
-  const { onChangePath } = useRedirect();
+  const { onChangePath, path } = useRedirect();
+  const questionLength = useData().length;
 
   const isTheLastWrongAnswer =
     currentWrongQuestionIndex === wrongAnswerIndexes.length - 1;
 
   const currentWrongAnswer = wrongAnswerIndexes[currentWrongQuestionIndex];
   const isTheLastQuetiosnInGroup =
-    (currentQuestionIndex + 1) % QUESTIONS_PER_GROUP === 0;
+    (currentQuestionIndex + 1) % QUESTIONS_PER_GROUP === 0 ||
+    currentQuestionIndex + 1 === questionLength;
+
+  const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
 
   useEffect(() => {
     const lastOpenQuestionIndex = Number(
       getFromLocalstorage(LocalstorageItems.lastOpenQuestion)
     );
     const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
+    const statistic = getFromLocalstorage(LocalstorageItems.statistic);
 
     if (lastOpenQuestionIndex > 0) {
       setCurrentQuestionIndex(lastOpenQuestionIndex);
     }
 
     if (wrongAnswers) {
-      const parsedWrongAnswers = JSON.parse(wrongAnswers);
-      setWrongAnswerIndexes(parsedWrongAnswers);
+      setWrongAnswerIndexes(wrongAnswers);
+    }
+
+    if (!statistic) {
+      setValueToLocalstorage(LocalstorageItems.statistic, []);
     }
     setIsInit(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useLayoutEffect(() => {
+    if (path === EPaths.MAIN) {
+      const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
+      if (wrongAnswers) {
+        setWrongAnswerIndexes(wrongAnswers);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path]);
 
   const resetQuestions = () => {
     setCurrentQuestionIndex(0);
@@ -80,6 +112,46 @@ export const QuestionProvider: FCC = ({ children }) => {
       );
     } else {
       onChangePath(EPaths.MAIN);
+
+      const wrongAnswers: number[] = getFromLocalstorage(
+        LocalstorageItems.wrongAnswers
+      );
+
+      const selectedQuestionBlock = Math.ceil(
+        currentQuestionIndex / QUESTIONS_PER_GROUP
+      );
+
+      const newStatisticValue: IStatistic = {
+        date: new Date().toLocaleDateString(),
+        selectedQuestionBlock,
+        countOfWrongAnswers: wrongAnswers.reduce((acc, cur) => {
+          const minQuestionIndex =
+            selectedQuestionBlock * QUESTIONS_PER_GROUP -
+            (QUESTIONS_PER_GROUP + 1);
+          const maxQuestionIndex = currentQuestionIndex;
+
+          if (cur >= minQuestionIndex && cur <= maxQuestionIndex) {
+            acc++;
+          }
+
+          return acc;
+        }, 0),
+
+        questionsInBlock:
+          currentQuestionIndex +
+          1 -
+          (selectedQuestionBlock - 1) * QUESTIONS_PER_GROUP,
+      };
+
+      const oldStatisticValues = getFromLocalstorage(
+        LocalstorageItems.statistic
+      );
+
+      setValueToLocalstorage(LocalstorageItems.statistic, [
+        newStatisticValue,
+        ...oldStatisticValues,
+      ]);
+
       resetQuestions();
     }
   };
@@ -96,13 +168,6 @@ export const QuestionProvider: FCC = ({ children }) => {
     } else {
       onChangePath(EPaths.MAIN);
       setCurrentWrongQuestionIndex(0);
-
-      const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
-      if (wrongAnswers) {
-        const parsedWrongAnswers = JSON.parse(wrongAnswers);
-
-        setWrongAnswerIndexes(parsedWrongAnswers);
-      }
     }
   };
 
@@ -110,19 +175,13 @@ export const QuestionProvider: FCC = ({ children }) => {
     const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
 
     if (wrongAnswers) {
-      const parsedWrongAnswers = JSON.parse(wrongAnswers);
-
-      setValueToLocalstorage(
-        LocalstorageItems.wrongAnswers,
-        JSON.stringify([
-          ...new Set([...parsedWrongAnswers, currentQuestionIndex]),
-        ])
-      );
+      setValueToLocalstorage(LocalstorageItems.wrongAnswers, [
+        ...new Set([...wrongAnswers, currentQuestionIndex]),
+      ]);
     } else {
-      setValueToLocalstorage(
-        LocalstorageItems.wrongAnswers,
-        JSON.stringify([currentQuestionIndex])
-      );
+      setValueToLocalstorage(LocalstorageItems.wrongAnswers, [
+        currentQuestionIndex,
+      ]);
     }
 
     setWrongAnswerIndexes([
@@ -134,15 +193,17 @@ export const QuestionProvider: FCC = ({ children }) => {
     const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
 
     if (wrongAnswers) {
-      const parsedWrongAnswers = JSON.parse(wrongAnswers);
+      const questionIndex = isWrongAnswerPage
+        ? currentWrongAnswer
+        : currentQuestionIndex;
+
+      const filteredWrongAnswers = wrongAnswers.filter(
+        (answer: number) => answer !== questionIndex
+      );
 
       setValueToLocalstorage(
         LocalstorageItems.wrongAnswers,
-        JSON.stringify(
-          parsedWrongAnswers.filter(
-            (answer: number) => answer !== currentWrongAnswer
-          )
-        )
+        filteredWrongAnswers
       );
     }
   };

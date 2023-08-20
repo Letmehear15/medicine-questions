@@ -1,9 +1,16 @@
 import React from "react";
 import { useData } from "../../hooks/useData";
-import { Divider, List, ListItem, ListItemButton } from "@mui/material";
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useQuestion } from "../../context/QuestionProvider";
 
-export const QUESTIONS_PER_GROUP = 100;
+export const QUESTIONS_PER_GROUP = 5;
 
 export const QuestionDivision = () => {
   const questions = useData();
@@ -17,12 +24,19 @@ export const QuestionDivision = () => {
           index === questions.length - 1
         ) {
           const startIndex = index - (index % QUESTIONS_PER_GROUP);
+          const endIndex = index + 1;
+          const blockNumber = Number(Math.ceil(endIndex / QUESTIONS_PER_GROUP));
 
           return (
             <React.Fragment key={index}>
               <ListItem>
                 <ListItemButton onClick={() => onStartTesting(startIndex)}>
-                  От {startIndex + 1} до {index + 1}
+                  <Stack>
+                    <Typography variant="h6" mb={1}>
+                      Блок {blockNumber}
+                    </Typography>
+                    От {startIndex + 1} до {endIndex}
+                  </Stack>
                 </ListItemButton>
               </ListItem>
               {index !== questions.length - 1 && <Divider />}

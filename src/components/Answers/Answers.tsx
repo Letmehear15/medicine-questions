@@ -47,10 +47,9 @@ export const Answers: FC<IAnswersProps> = ({
 
     if (!isWrongAnswerPage && !wasRightAnswer) {
       onAddWrongAnswer();
-      return;
     }
 
-    if (isWrongAnswerPage && wasRightAnswer) {
+    if (wasRightAnswer) {
       removeWrongAnswer();
     }
   };

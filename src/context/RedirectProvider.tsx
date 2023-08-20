@@ -6,6 +6,7 @@ export enum EPaths {
   QUESTION = "question",
   WRONG_ANSWERS = "wrongAnswers",
   QUESTION_DIVISION = "questionDivision",
+  STATISTIC = "statistic",
 }
 
 interface IRedirectContext {

@@ -16,8 +16,11 @@ export const Main = () => {
     LocalstorageItems.lastOpenQuestion
   );
 
-  const shouldShowContinueButton =
-    hasLastOpenQuestion && Number(hasLastOpenQuestion) > 0;
+  const statistics = getFromLocalstorage(LocalstorageItems.statistic);
+
+  const shouldShowContinueButton = Boolean(
+    hasLastOpenQuestion && Number(hasLastOpenQuestion) > 0
+  );
 
   return (
     <Stack gap={5} sx={{ height: "100vh" }}>
@@ -52,8 +55,9 @@ export const Main = () => {
         Неверные ответы
       </Button>
       <Button
-        disabled
+        onClick={() => onChangePath(EPaths.STATISTIC)}
         size="large"
+        disabled={statistics.length === 0}
         variant="contained"
         endIcon={<span>&#128065;</span>}
       >
