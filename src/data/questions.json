@@ -219,7 +219,11 @@
                     "isCorrect": false
                 },
                 {
-                    "text": "mnohočetného myelomu + sarkoidóze",
+                    "text": "mnohočetného myelomu",
+                    "isCorrect": true
+                },
+                {
+                    "text": "sarkoidóze",
                     "isCorrect": true
                 }
             ]
@@ -241,7 +245,7 @@
                     "isCorrect": true
                 },
                 {
-                    "text": "ežící pozice",
+                    "text": "ležící pozice",
                     "isCorrect": false
                 }
             ]
@@ -3010,7 +3014,7 @@
             "answers": [
                 {
                     "text": "resekce postižené oblasti slepého střeva + resekce poloviny tenkého střeva",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "strikturoplastická operace а resekce krátké časti tenkého střeva",
@@ -5530,7 +5534,7 @@
                 },
                 {
                     "text": "ATB + observace",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "Laporoskopie  + laporotomie",
@@ -7114,7 +7118,7 @@
             "answers": [
                 {
                     "text": "absorbováno ve ferri formě jako Fe3+",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "v zásobní formě vázáno reverzibilně na feritin",
@@ -7126,10 +7130,6 @@
                 },
                 {
                     "text": "vylučováno moči ve ferro formě jako Fe2+",
-                    "isCorrect": true
-                },
-                {
-                    "text": "",
                     "isCorrect": false
                 }
             ]
@@ -7149,10 +7149,6 @@
                 {
                     "text": "absorbováno ve ferri formě jako Fe2+",
                     "isCorrect": true
-                },
-                {
-                    "text": "",
-                    "isCorrect": false
                 }
             ]
         },
@@ -7518,7 +7514,7 @@
                 },
                 {
                     "text": "kolem nuly: -2 až +2",
-                    "isCorrect": true
+                    "isCorrect": false
                 }
             ]
         },
@@ -10944,16 +10940,15 @@
         },
         {
             "id": 544,
-            "questionText": " Dítě má sublingvální akutní laryngitidu, po škále Downs 3 body",
-            "answers": []
-        },
-        {
-            "id": 545,
-            "questionText": "v",
+            "questionText": "Dítě má sublingvální akutní laryngitidu, po škále Downs 3 body. Co děláme?",
             "answers": [
                 {
                     "text": "antibiotika",
                     "isCorrect": false
+                },
+                {
+                    "text": "dáváme glukokortikoidy — dexametazon i.v. či i.m.",
+                    "isCorrect": true
                 },
                 {
                     "text": "antihistaminika",
@@ -10965,6 +10960,7 @@
                 }
             ]
         },
+
         {
             "id": 546,
             "questionText": " Stridor",
@@ -12717,7 +12713,7 @@
                 },
                 {
                     "text": "Hypertenze + zmenšení ledvin",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "V mladém veky se rychle progresuje",
@@ -14527,11 +14523,11 @@
         },
         {
             "id": 718,
-            "questionText": " Úvodní kombinací cytostatik u m",
+            "questionText": " Úvodní kombinací cytostatik u m. Hodgkin je nejčastěji",
             "answers": [
                 {
                     "text": "Leukeran + Prednison",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "MOPP",
@@ -18327,7 +18323,7 @@
                 },
                 {
                     "text": "HPV 6, HPV 11 + kouření",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "nějaká bakterie jako etiologicky faktor",
@@ -22421,11 +22417,11 @@
                 },
                 {
                     "text": "rakovina žaludku + některé z předchozích; močový měchýř + 3 další předchozí, dlouhé odpovědi",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "rakovina plic (+ třetí), močový měchýř, prostata, tlusté střevo a konečník + žaludek, děloha, hrdla děložního, prsa (+ druhý)",
-                    "isCorrect": true
+                    "isCorrect": false
                 }
             ]
         },
@@ -23013,7 +23009,7 @@
                 },
                 {
                     "text": "čisticí prostředky *pokud v otázce se ptají o tom, čím nejčastěji děti se otravuji+",
-                    "isCorrect": true
+                    "isCorrect": false
                 }
             ]
         },
@@ -23869,7 +23865,7 @@
                 },
                 {
                     "text": "B-blokátory + diabetes",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "nejpřísnější kontrola okamžitě TIA",
@@ -27103,11 +27099,11 @@
                 },
                 {
                     "text": "analýza na HPV + PAP test",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "cytologický stěr z děložního hrdla + kolposkopie 1krát ročně",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "PAP test + kolposkopie",
@@ -27725,7 +27721,7 @@
             "answers": [
                 {
                     "text": "urea + kreatinin",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "ANCA-protilátky",
@@ -30317,7 +30313,7 @@
             "answers": [
                 {
                     "text": "US + klinický obraz",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "anamnéza + klinický obraz",
@@ -30329,7 +30325,7 @@
                 },
                 {
                     "text": "tlak + teplota",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "anamnéza a RTG",
@@ -30351,7 +30347,7 @@
                 },
                 {
                     "text": "US + CT",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "PET",
@@ -30507,7 +30503,7 @@
                 },
                 {
                     "text": "tryplet karboplatina + plaxitax",
-                    "isCorrect": true
+                    "isCorrect": false
                 }
             ]
         },
@@ -31413,7 +31409,7 @@
                 },
                 {
                     "text": "+ starší pacienty, kteří mají ortostatickou hypotenzi, vertigo a předkolapsový stav potřebují rehydratace bez ohledu na anamnézu?",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "zvýšení kreatininu a úrea",
@@ -32369,11 +32365,11 @@
             "answers": [
                 {
                     "text": "hCG + SP1",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "AFP + placentární ALP",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "hCG + AFP",
@@ -32381,7 +32377,7 @@
                 },
                 {
                     "text": "CEA + AFP",
-                    "isCorrect": true
+                    "isCorrect": false
                 }
             ]
         },
@@ -32897,11 +32893,11 @@
             "answers": [
                 {
                     "text": "útlum zpetné resorpce Ca2 +",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "zvýšení resorpce Na+",
-                    "isCorrect": true
+                    "isCorrect": false
                 },
                 {
                     "text": "aktivaci zpetné resorpce Ca2 +",
