@@ -1,25 +1,14 @@
 import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
-import {
-  LocalstorageItems,
-  useLocalstorage,
-} from "../../hooks/useLocalstorage";
 import { useQuestion } from "../../context/QuestionProvider";
 import { EPaths, useRedirect } from "../../context/RedirectProvider";
 
 export const Main = () => {
-  const { getFromLocalstorage } = useLocalstorage();
-  const { wrongAnswerIndexes } = useQuestion();
+  const { wrongAnswerIndexes, currentQuestionIndex, statistic } = useQuestion();
   const { onChangePath } = useRedirect();
 
-  const hasLastOpenQuestion = getFromLocalstorage(
-    LocalstorageItems.lastOpenQuestion
-  );
-
-  const statistics = getFromLocalstorage(LocalstorageItems.statistic);
-
   const shouldShowContinueButton = Boolean(
-    hasLastOpenQuestion && Number(hasLastOpenQuestion) > 0
+    currentQuestionIndex && Number(currentQuestionIndex) > 0
   );
 
   return (
@@ -57,7 +46,7 @@ export const Main = () => {
       <Button
         onClick={() => onChangePath(EPaths.STATISTIC)}
         size="large"
-        disabled={statistics.length === 0}
+        disabled={statistic.length === 0}
         variant="contained"
         endIcon={<span>&#128065;</span>}
       >

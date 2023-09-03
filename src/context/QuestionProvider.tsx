@@ -1,15 +1,12 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useLayoutEffect, useState } from "react";
 import { FCC } from "../types";
-import { LocalstorageItems, useLocalstorage } from "../hooks/useLocalstorage";
 import { EPaths, useRedirect } from "./RedirectProvider";
 import { QUESTIONS_PER_GROUP } from "../pages/question-division/QuestionDivision";
 import { useData } from "../hooks/useData";
+import { useGetData } from "../api/hooks/useGetData";
+import { putData } from "../api/api";
+import { ErrorPage } from "../components/ErrorPage";
+import { Loading } from "../components/Loading";
 
 interface IQuestionContext {
   onLastOpenQuestionUpdate: () => void;
@@ -23,6 +20,7 @@ interface IQuestionContext {
   wrongAnswerIndexes: number[];
   isTheLastWrongAnswer: boolean;
   currentWrongQuestionIndex: number;
+  statistic: IStatistic[];
 }
 
 export interface IAnswers {
@@ -46,14 +44,42 @@ export interface IStatistic {
 const QuestionContext = createContext<IQuestionContext | null>(null);
 
 export const QuestionProvider: FCC = ({ children }) => {
+  const {
+    data: { lastOpenQuestion, wrongAnswers, statistic },
+    isError,
+    isLoading,
+  } = useGetData();
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
   const [currentWrongQuestionIndex, setCurrentWrongQuestionIndex] = useState(0);
-  const [isInit, setIsInit] = useState(false);
+
   const [wrongAnswerIndexes, setWrongAnswerIndexes] = useState<number[]>([]);
 
-  const { setValueToLocalstorage, getFromLocalstorage } = useLocalstorage();
   const { onChangePath, path } = useRedirect();
   const questionLength = useData().length;
+
+  useLayoutEffect(() => {
+    if (path === EPaths.MAIN) {
+      if (wrongAnswers) {
+        setWrongAnswerIndexes(wrongAnswers);
+      }
+    }
+
+    if (lastOpenQuestion && wrongAnswers) {
+      setWrongAnswerIndexes(wrongAnswers);
+      setCurrentQuestionIndex(lastOpenQuestion);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path, lastOpenQuestion, wrongAnswers]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <ErrorPage />;
+  }
 
   const isTheLastWrongAnswer =
     currentWrongQuestionIndex === wrongAnswerIndexes.length - 1;
@@ -65,57 +91,17 @@ export const QuestionProvider: FCC = ({ children }) => {
 
   const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
 
-  useEffect(() => {
-    const lastOpenQuestionIndex = Number(
-      getFromLocalstorage(LocalstorageItems.lastOpenQuestion)
-    );
-    const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
-    const statistic = getFromLocalstorage(LocalstorageItems.statistic);
-
-    if (lastOpenQuestionIndex > 0) {
-      setCurrentQuestionIndex(lastOpenQuestionIndex);
-    }
-
-    if (wrongAnswers) {
-      setWrongAnswerIndexes(wrongAnswers);
-    }
-
-    if (!statistic) {
-      setValueToLocalstorage(LocalstorageItems.statistic, []);
-    }
-    setIsInit(true);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useLayoutEffect(() => {
-    if (path === EPaths.MAIN) {
-      const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
-      if (wrongAnswers) {
-        setWrongAnswerIndexes(wrongAnswers);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [path]);
-
-  const resetQuestions = () => {
+  const resetQuestions = async () => {
     setCurrentQuestionIndex(0);
-    setValueToLocalstorage(LocalstorageItems.lastOpenQuestion, 0);
+    await putData({ lastOpenQuestion: 0 });
   };
 
-  const onLastOpenQuestionUpdate = () => {
+  const onLastOpenQuestionUpdate = async () => {
     if (!isTheLastQuetiosnInGroup) {
       setCurrentQuestionIndex((prev) => prev + 1);
-      setValueToLocalstorage(
-        LocalstorageItems.lastOpenQuestion,
-        currentQuestionIndex + 1
-      );
+      await putData({ lastOpenQuestion: currentQuestionIndex + 1 });
     } else {
       onChangePath(EPaths.MAIN);
-
-      const wrongAnswers: number[] = getFromLocalstorage(
-        LocalstorageItems.wrongAnswers
-      );
 
       const selectedQuestionBlock = Math.ceil(
         currentQuestionIndex / QUESTIONS_PER_GROUP
@@ -143,23 +129,16 @@ export const QuestionProvider: FCC = ({ children }) => {
           (selectedQuestionBlock - 1) * QUESTIONS_PER_GROUP,
       };
 
-      const oldStatisticValues = getFromLocalstorage(
-        LocalstorageItems.statistic
-      );
-
-      setValueToLocalstorage(LocalstorageItems.statistic, [
-        newStatisticValue,
-        ...oldStatisticValues,
-      ]);
+      await putData({ statistic: [newStatisticValue, ...statistic] });
 
       resetQuestions();
     }
   };
 
-  const onStartTesting = (currentQuestion: number) => {
+  const onStartTesting = async (currentQuestion: number) => {
     onChangePath(EPaths.QUESTION);
     setCurrentQuestionIndex(currentQuestion);
-    setValueToLocalstorage(LocalstorageItems.lastOpenQuestion, currentQuestion);
+    await putData({ lastOpenQuestion: currentQuestion });
   };
 
   const onNextWrongAnswers = () => {
@@ -171,17 +150,14 @@ export const QuestionProvider: FCC = ({ children }) => {
     }
   };
 
-  const onAddWrongAnswer = () => {
-    const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
-
+  const onAddWrongAnswer = async () => {
     if (wrongAnswers) {
-      setValueToLocalstorage(LocalstorageItems.wrongAnswers, [
+      const newWrongAnswers = [
         ...new Set([...wrongAnswers, currentQuestionIndex]),
-      ]);
+      ];
+      await putData({ wrongAnswers: newWrongAnswers });
     } else {
-      setValueToLocalstorage(LocalstorageItems.wrongAnswers, [
-        currentQuestionIndex,
-      ]);
+      await putData({ wrongAnswers: [currentQuestionIndex] });
     }
 
     setWrongAnswerIndexes([
@@ -189,9 +165,7 @@ export const QuestionProvider: FCC = ({ children }) => {
     ]);
   };
 
-  const removeWrongAnswer = () => {
-    const wrongAnswers = getFromLocalstorage(LocalstorageItems.wrongAnswers);
-
+  const removeWrongAnswer = async () => {
     if (wrongAnswers) {
       const questionIndex = isWrongAnswerPage
         ? currentWrongAnswer
@@ -201,10 +175,7 @@ export const QuestionProvider: FCC = ({ children }) => {
         (answer: number) => answer !== questionIndex
       );
 
-      setValueToLocalstorage(
-        LocalstorageItems.wrongAnswers,
-        filteredWrongAnswers
-      );
+      await putData({ wrongAnswers: filteredWrongAnswers });
     }
   };
 
@@ -220,11 +191,8 @@ export const QuestionProvider: FCC = ({ children }) => {
     currentWrongQuestionIndex,
     removeWrongAnswer,
     isTheLastQuetiosnInGroup,
+    statistic,
   };
-
-  if (!isInit) {
-    return null;
-  }
 
   return (
     <QuestionContext.Provider value={value}>

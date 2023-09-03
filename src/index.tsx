@@ -17,9 +17,9 @@ root.render(
     <CssBaseline />
 
     <RedirectProvider>
-      <QuestionProvider>
-        <App />
-      </QuestionProvider>
+      {/* <QuestionProvider> */}
+      <App />
+      {/* </QuestionProvider> */}
     </RedirectProvider>
   </ThemeProvider>
 );

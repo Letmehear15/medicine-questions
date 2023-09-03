@@ -1,21 +1,13 @@
 import { Divider, List, ListItem, Stack, Typography } from "@mui/material";
 import React from "react";
-import {
-  LocalstorageItems,
-  useLocalstorage,
-} from "../../hooks/useLocalstorage";
-import { IStatistic } from "../../context/QuestionProvider";
+import { useQuestion } from "../../context/QuestionProvider";
 
 export const Statistic = () => {
-  const { getFromLocalstorage } = useLocalstorage();
-
-  const statisticDates: IStatistic[] = getFromLocalstorage(
-    LocalstorageItems.statistic
-  );
+  const { statistic } = useQuestion();
 
   return (
     <List sx={{ minHeight: "100vh" }}>
-      {statisticDates.map(
+      {statistic.map(
         (
           {
             countOfWrongAnswers,
