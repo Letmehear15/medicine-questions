@@ -151,18 +151,21 @@ export const QuestionProvider: FCC = ({ children }) => {
   };
 
   const onAddWrongAnswer = async () => {
-    if (wrongAnswers) {
+    if (wrongAnswers.length > 0 || wrongAnswerIndexes.length > 0) {
       const newWrongAnswers = [
-        ...new Set([...wrongAnswers, currentQuestionIndex]),
+        ...new Set([
+          ...wrongAnswers,
+          ...wrongAnswerIndexes,
+          currentQuestionIndex,
+        ]),
       ];
+
       await putData({ wrongAnswers: newWrongAnswers });
     } else {
       await putData({ wrongAnswers: [currentQuestionIndex] });
     }
 
-    setWrongAnswerIndexes([
-      ...new Set([...wrongAnswerIndexes, currentQuestionIndex]),
-    ]);
+    setWrongAnswerIndexes([...wrongAnswerIndexes, currentQuestionIndex]);
   };
 
   const removeWrongAnswer = async () => {

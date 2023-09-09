@@ -8,8 +8,8 @@ export const useGetData = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
     const [data, setData] = useState<AppSettings>({} as AppSettings)
-    const {path} = useRedirect()
-
+    const { path } = useRedirect()
+    
     useEffect(() => {
         (async () => {
           if(path === EPaths.MAIN){
@@ -28,6 +28,6 @@ export const useGetData = () => {
           }
         })();
       }, [path]);
-
+    
     return {isLoading, data, isError}
 }

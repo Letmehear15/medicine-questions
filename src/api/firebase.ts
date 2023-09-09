@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { isDevMode } from "../utils/constant";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAWFEUCjz1oZl4aWxySebSvQKOml5-D3YQ",
@@ -13,5 +14,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-export const collectionName = 'app-settings'
-export const documentId = 'uRmPgg8priQiGehyk911'
+export const collectionName = isDevMode? 'app-settings-test' :  'app-settings'
+export const documentId = isDevMode ? '5z8QfId6ThX24e4Wf3yV' : 'uRmPgg8priQiGehyk911'
