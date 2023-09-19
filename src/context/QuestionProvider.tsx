@@ -1,4 +1,10 @@
-import { createContext, useContext, useLayoutEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { FCC } from "../types";
 import { EPaths, useRedirect } from "./RedirectProvider";
 import { QUESTIONS_PER_GROUP } from "../pages/question-division/QuestionDivision";
@@ -11,6 +17,7 @@ import { Loading } from "../components/Loading";
 interface IQuestionContext {
   onLastOpenQuestionUpdate: () => void;
   onStartTesting: (currentQuestion: number) => void;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   onAddWrongAnswer: () => void;
   onNextWrongAnswers: () => void;
   removeWrongAnswer: () => void;
@@ -48,6 +55,7 @@ export const QuestionProvider: FCC = ({ children }) => {
     data: { lastOpenQuestion, wrongAnswers, statistic },
     isError,
     isLoading,
+    setIsLoading,
   } = useGetData();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -60,18 +68,23 @@ export const QuestionProvider: FCC = ({ children }) => {
   const questionLength = useData().length;
 
   useLayoutEffect(() => {
-    if (path === EPaths.MAIN) {
+    if (path === EPaths.MAIN && !isLoading) {
       if (wrongAnswers) {
         setWrongAnswerIndexes(wrongAnswers);
       }
-    }
 
-    if (lastOpenQuestion && wrongAnswers) {
-      setWrongAnswerIndexes(wrongAnswers);
-      setCurrentQuestionIndex(lastOpenQuestion);
+      if (lastOpenQuestion) {
+        setCurrentQuestionIndex(lastOpenQuestion);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [path, lastOpenQuestion, wrongAnswers]);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (path === EPaths.MAIN) {
+      setCurrentWrongQuestionIndex(0);
+    }
+  }, [path]);
 
   if (isLoading) {
     return <Loading />;
@@ -82,9 +95,9 @@ export const QuestionProvider: FCC = ({ children }) => {
   }
 
   const isTheLastWrongAnswer =
-    currentWrongQuestionIndex === wrongAnswerIndexes.length - 1;
+    currentWrongQuestionIndex === wrongAnswers.length - 1;
 
-  const currentWrongAnswer = wrongAnswerIndexes[currentWrongQuestionIndex];
+  const currentWrongAnswer = wrongAnswers[currentWrongQuestionIndex];
   const isTheLastQuetiosnInGroup =
     (currentQuestionIndex + 1) % QUESTIONS_PER_GROUP === 0 ||
     currentQuestionIndex + 1 === questionLength;
@@ -101,8 +114,6 @@ export const QuestionProvider: FCC = ({ children }) => {
       setCurrentQuestionIndex((prev) => prev + 1);
       await putData({ lastOpenQuestion: currentQuestionIndex + 1 });
     } else {
-      onChangePath(EPaths.MAIN);
-
       const selectedQuestionBlock = Math.ceil(
         currentQuestionIndex / QUESTIONS_PER_GROUP
       );
@@ -110,7 +121,7 @@ export const QuestionProvider: FCC = ({ children }) => {
       const newStatisticValue: IStatistic = {
         date: new Date().toLocaleDateString(),
         selectedQuestionBlock,
-        countOfWrongAnswers: wrongAnswers.reduce((acc, cur) => {
+        countOfWrongAnswers: wrongAnswerIndexes.reduce((acc, cur) => {
           const minQuestionIndex =
             selectedQuestionBlock * QUESTIONS_PER_GROUP -
             (QUESTIONS_PER_GROUP + 1);
@@ -129,15 +140,17 @@ export const QuestionProvider: FCC = ({ children }) => {
           (selectedQuestionBlock - 1) * QUESTIONS_PER_GROUP,
       };
 
+      setIsLoading(true);
+      onChangePath(EPaths.MAIN);
       await putData({ statistic: [newStatisticValue, ...statistic] });
 
-      resetQuestions();
+      await resetQuestions();
     }
   };
 
   const onStartTesting = async (currentQuestion: number) => {
-    onChangePath(EPaths.QUESTION);
     setCurrentQuestionIndex(currentQuestion);
+    onChangePath(EPaths.QUESTION);
     await putData({ lastOpenQuestion: currentQuestion });
   };
 
@@ -145,19 +158,19 @@ export const QuestionProvider: FCC = ({ children }) => {
     if (!isTheLastWrongAnswer) {
       setCurrentWrongQuestionIndex((prev) => prev + 1);
     } else {
+      setIsLoading(true);
       onChangePath(EPaths.MAIN);
       setCurrentWrongQuestionIndex(0);
     }
   };
 
   const onAddWrongAnswer = async () => {
-    if (wrongAnswers.length > 0 || wrongAnswerIndexes.length > 0) {
+    if (wrongAnswerIndexes.includes(currentQuestionIndex)) {
+      return;
+    }
+    if (wrongAnswerIndexes.length > 0) {
       const newWrongAnswers = [
-        ...new Set([
-          ...wrongAnswers,
-          ...wrongAnswerIndexes,
-          currentQuestionIndex,
-        ]),
+        ...new Set([...wrongAnswerIndexes, currentQuestionIndex]),
       ];
 
       await putData({ wrongAnswers: newWrongAnswers });
@@ -169,15 +182,22 @@ export const QuestionProvider: FCC = ({ children }) => {
   };
 
   const removeWrongAnswer = async () => {
-    if (wrongAnswers) {
+    if (
+      !wrongAnswerIndexes.includes(currentQuestionIndex) &&
+      !isWrongAnswerPage
+    ) {
+      return;
+    }
+    if (wrongAnswerIndexes) {
       const questionIndex = isWrongAnswerPage
         ? currentWrongAnswer
         : currentQuestionIndex;
 
-      const filteredWrongAnswers = wrongAnswers.filter(
+      const filteredWrongAnswers = wrongAnswerIndexes.filter(
         (answer: number) => answer !== questionIndex
       );
 
+      setWrongAnswerIndexes(filteredWrongAnswers);
       await putData({ wrongAnswers: filteredWrongAnswers });
     }
   };
@@ -190,11 +210,12 @@ export const QuestionProvider: FCC = ({ children }) => {
     onNextWrongAnswers,
     currentWrongAnswer,
     isTheLastWrongAnswer,
-    wrongAnswerIndexes,
+    wrongAnswerIndexes: wrongAnswers,
     currentWrongQuestionIndex,
     removeWrongAnswer,
     isTheLastQuetiosnInGroup,
     statistic,
+    setIsLoading,
   };
 
   return (

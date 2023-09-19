@@ -69,7 +69,7 @@ export const Question = () => {
 
       {wasChecked && (
         <Button variant="contained" onClick={onNextQuestion}>
-          {isTheLastQuetiosnInGroup ||
+          {(isTheLastQuetiosnInGroup && !isWrongAnswerPage) ||
           (isTheLastWrongAnswer && isWrongAnswerPage)
             ? "На главную"
             : "Следующий вопрос"}
