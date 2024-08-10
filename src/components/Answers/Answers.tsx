@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useLayoutEffect, useState } from "react";
 import { IAnswers, useQuestion } from "../../context/QuestionProvider";
 import {
   Button,
@@ -27,17 +27,12 @@ export const Answers: FC<IAnswersProps> = ({
 
   const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setChecked([]);
   }, [answers]);
 
-  checked.forEach((element) => {
-    console.log(answers[element]);
-    console.log({ answers });
-  });
-
   const pointSummary = checked.every(
-    (element) => answers[element]?.points !== 0
+    (element) => answers[element] && answers[element]?.points !== 0
   )
     ? checked.reduce((acc, cur) => acc + answers[cur].points, 0)
     : 0;
