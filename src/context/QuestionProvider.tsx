@@ -32,7 +32,7 @@ interface IQuestionContext {
 
 export interface IAnswers {
   text: string;
-  isCorrect: boolean;
+  points: number;
 }
 
 export interface IQuestion {

@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { IAnswers, useQuestion } from "../../context/QuestionProvider";
 import {
   Button,
@@ -7,7 +7,6 @@ import {
   FormGroup,
   Stack,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { EPaths, useRedirect } from "../../context/RedirectProvider";
 
@@ -26,21 +25,24 @@ export const Answers: FC<IAnswersProps> = ({
   const { onAddWrongAnswer, removeWrongAnswer } = useQuestion();
   const { path } = useRedirect();
 
-  const { palette } = useTheme();
-
   const isWrongAnswerPage = path === EPaths.WRONG_ANSWERS;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setChecked([]);
   }, [answers]);
 
-  const rightAnswers = answers
-    .map((answer, index) => (answer.isCorrect ? index : -1))
-    .filter((index) => index !== -1);
+  checked.forEach((element) => {
+    console.log(answers[element]);
+    console.log({ answers });
+  });
 
-  const wasRightAnswer =
-    rightAnswers.length === checked.length &&
-    rightAnswers.every((answer) => checked.includes(answer));
+  const pointSummary = checked.every(
+    (element) => answers[element]?.points !== 0
+  )
+    ? checked.reduce((acc, cur) => acc + answers[cur].points, 0)
+    : 0;
+
+  const wasRightAnswer = pointSummary === 100;
 
   const onCheckAnswers = () => {
     setWasChecked(true);
@@ -65,34 +67,24 @@ export const Answers: FC<IAnswersProps> = ({
     setChecked(filteredChecked);
   };
 
-  const stylesAfterCheck = (isCorrect: boolean) =>
-    wasChecked
-      ? {
-          borderBottom: `2px solid ${
-            isCorrect ? palette.success.main : palette.error.main
-          }`,
-          p: 0.5,
-        }
-      : {};
-
   return (
     <Stack>
       {wasChecked && (
         <Typography
-          color={wasRightAnswer ? palette.success.main : palette.error.main}
+          color={wasRightAnswer ? "#47ffa7" : " tomato"}
+          fontSize={20}
+          mb={3}
         >
-          {wasRightAnswer ? "Умничка!" : "Все равно умничка!"}
+          Вы набрали: {pointSummary} баллов из 100
         </Typography>
       )}
       <FormGroup>
-        {answers.map(({ text, isCorrect }, index) => (
+        {answers.map(({ text }, index) => (
           <FormControlLabel
             sx={{ mb: 3 }}
             key={index}
             control={<Checkbox sx={{ mr: 1 }} />}
-            label={
-              <Typography sx={stylesAfterCheck(isCorrect)}>{text}</Typography>
-            }
+            label={<Typography>{text}</Typography>}
             checked={checked.includes(index)}
             onChange={() => onCheckChange(index)}
             disabled={wasChecked}

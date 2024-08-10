@@ -14,7 +14,7 @@ export const Main = () => {
   return (
     <Stack gap={5} sx={{ height: "100vh" }}>
       <Typography mb={5} variant="h3" textAlign="center">
-        Для Мимимилки
+        Тестирование
       </Typography>
       {shouldShowContinueButton && (
         <Button
